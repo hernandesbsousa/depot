@@ -23,7 +23,7 @@ class ProductTest < ActiveSupport::TestCase
   end
 
   def new_product(image_url)
-    Product.new(title: "book",
+    Product.new(title: "book book book",
                 description: "xxx",
                 price: 1,
                 image_url: image_url)
@@ -46,5 +46,11 @@ class ProductTest < ActiveSupport::TestCase
                           image_url: "fred.gif")
     assert product.invalid?
     assert_equal [I18n.translate('errors.messages.taken')], product.errors[:title]
+  end
+
+  test "product title should be longer than 10 chars" do
+    product = products(:short_title)
+    assert product.invalid?
+    assert_equal ["is too short (minimum is 10 characters)"], product.errors[:title]
   end
 end
